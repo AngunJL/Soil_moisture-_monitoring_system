@@ -6,6 +6,7 @@ const char *ssid = "LAPTOP-621";
 const char *password = "Tni54321";
 const char *mqtt_server = "192.168.137.167";
 const int mqtt_port = 1883; // 1883 for TCP
+const int soilpin = 4;
 // Topic for Publish &Subscribe
 const char *mqtt_publish_topic = "esp32/output";
 const char *mqtt_subscribe_topic = "esp32/input";
@@ -76,6 +77,7 @@ void setup()
 {
   Serial.begin(9600);
   setup_wifi();
+  pinMode(soilpin, INPUT);
   client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 }
@@ -89,17 +91,16 @@ void loop()
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 5000)
-  { // ทุกๆ 5 วินาที
+  if (now - lastMsg > 10000)
+  { // ทุกๆ 10 วินาที
     lastMsg = now;
     ++value;
 
     // สุ่มค่าจำลองจากหลายๆ sensor
-    int temp = random(20, 46);  // อุณหภูมิ 20-45
-    int humid = random(40, 81); // ความชื้น 40-80
+    int humid = analogRead(soilpin); // ความชื้นสัมพัทธ์
 
     // สร้าง JSON payload อย่างถูกต้อง
-    sprintf(msg, "{\"temp\": %d, \"humid\": %d}", temp, humid);
+    sprintf(msg, "{\"HUMID\": %d}", humid);
 
     Serial.print("Publishing JSON to topic '");
     Serial.print(mqtt_publish_topic);
