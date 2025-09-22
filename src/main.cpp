@@ -113,14 +113,14 @@ void loop()
     Serial.print(humid);
 
     // สร้าง JSON payload อย่างถูกต้อง
-    sprintf(msg, "{\"HUMID\": %d}", humid);
+    sprintf(msg, "{\"HUMID\": %d}\n", humid);
     if (moisturePercent < 20)
     {
-      Serial.println("Should Water the Plant!");
+      Serial.print("Should Water the Plant!");
     }
     else
     {
-      Serial.println("Status is Good.");
+      Serial.print("Status is Good.");
     }
 
     Serial.print("Publishing JSON to topic '");
