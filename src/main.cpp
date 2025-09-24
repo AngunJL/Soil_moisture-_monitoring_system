@@ -100,7 +100,6 @@ void loop()
 
     Serial.print("Soil Moisture: ");
     Serial.print(humid);
-    // String status_msg = (humid < 2000) ? "Should water the plant!" : "Status is Good.";
 
     // สร้าง JSON payload อย่างถูกต้อง
     sprintf(msg, "{\"humid\": %d}", humid);
